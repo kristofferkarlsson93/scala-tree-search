@@ -22,5 +22,13 @@ class NodesSpec extends Spec {
       val result = Nodes.getCommonNodeNamesExceptBepa(treeA, treeB)
       result.length shouldBe 2
     }
+    "should return results with the name 'bepa' (lower case)" in {
+      val nodeInfo = randomOf(genNodeInfo).copy(nodeInfoName = NodeName("bepa"))
+      val treeA = Tree(nodeInfo, Seq.empty)
+      val treeB = Tree(nodeInfo, Seq.empty)
+
+      val result = Nodes.getCommonNodeNamesExceptBepa(treeA, treeB)
+      result.length shouldBe 2
+    }
   }
 }
