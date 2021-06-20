@@ -19,7 +19,7 @@ class NodesSpec extends Spec {
       val treeA = Tree(nodeInfoA, Seq.empty)
       val treeB = Tree(nodeInfoB, Seq.empty)
 
-      val result = Nodes.getCommonNodeNamesExceptBepa(treeA, treeA)
+      val result = Nodes.getCommonNodeNamesExceptBepa(treeA, treeB)
       result.length shouldBe 1
     }
   }
