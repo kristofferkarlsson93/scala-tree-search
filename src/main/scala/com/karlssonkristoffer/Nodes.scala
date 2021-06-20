@@ -3,6 +3,8 @@ package com.karlssonkristoffer
 object Nodes {
 
   def getCommonNodeNamesExceptBepa(firstTree: Tree, secondTree: Tree): Seq[NodeName] = {
-    Seq.empty
+    if (firstTree.nodeInfo.nodeInfoName.name != "Bepa") {
+      Seq(firstTree.nodeInfo.nodeInfoName)
+    } else Seq.empty
   }
 }
