@@ -10,7 +10,7 @@ case class TypeB(cost: Cost, nodeName: NodeName, children: Seq[TypeB]) {
   def toTree: Tree = Tree(NodeInfo(cost, nodeName), children.map(_.toTree))
 }
 
-case class Tree(nodeInfo: NodeInfo, trees: Seq[Tree])
+case class Tree(nodeInfo: NodeInfo, branches: Seq[Tree])
 
 object Tree {
 

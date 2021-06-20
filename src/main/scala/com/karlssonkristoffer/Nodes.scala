@@ -5,9 +5,9 @@ object Nodes {
   def getCommonNodeNamesExceptBepa(firstTree: Tree, secondTree: Tree): Seq[NodeName] = {
 
     def treeNodesToSeq(tree: Tree, nodeList: Seq[NodeInfo]): Seq[NodeInfo] = {
-      if (tree.trees.isEmpty) nodeList :+ tree.nodeInfo
+      if (tree.branches.isEmpty) nodeList :+ tree.nodeInfo
       else {
-        tree.trees.flatMap(child => treeNodesToSeq(child, nodeList :+ tree.nodeInfo))
+        tree.branches.flatMap(child => treeNodesToSeq(child, nodeList :+ tree.nodeInfo))
       }
     }
 
