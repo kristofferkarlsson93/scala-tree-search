@@ -4,24 +4,18 @@ object Nodes {
 
   def getCommonNodeNamesExceptBepa(firstTree: Tree, secondTree: Tree): Seq[NodeName] = {
 
-    def treeNodesToSeq(trees: Seq[Tree], nodeList: Seq[NodeInfo]): Seq[NodeInfo] = {
-      if (trees.isEmpty) nodeList
+    def treeNodesToSeq(tree: Tree, nodeList: Seq[NodeInfo]): Seq[NodeInfo] = {
+      if (tree.trees.isEmpty) nodeList :+ tree.nodeInfo
       else {
-        trees.flatMap { (childTree: Tree) =>
-          treeNodesToSeq(
-            childTree.trees,
-            Seq.concat(nodeList, Seq(childTree.nodeInfo))
-          )
-        }
+        tree.trees.flatMap(child => treeNodesToSeq(child, nodeList :+ tree.nodeInfo))
       }
     }
 
-    val firstRest = treeNodesToSeq(firstTree.trees, Seq.empty).map(_.nodeInfoName)
-    val secondRest = treeNodesToSeq(secondTree.trees, Seq.empty).map(_.nodeInfoName)
+    val firstTreesNodes = treeNodesToSeq(firstTree, Seq.empty)
+    val secondTreesNodes = treeNodesToSeq(secondTree, Seq.empty)
 
-    val firstTreeResult = firstTree.nodeInfo.nodeInfoName
-    val secondTreeResult = secondTree.nodeInfo.nodeInfoName
-
-    Seq(firstTreeResult, secondTreeResult).concat(firstRest).concat(secondRest).filterNot(_.name == "Bepa")
+    Seq.concat(firstTreesNodes, secondTreesNodes)
+      .map(_.nodeInfoName)
+      .filterNot(_.name == "Bepa")
   }
 }
