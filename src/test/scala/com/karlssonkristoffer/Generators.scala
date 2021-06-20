@@ -21,12 +21,22 @@ object Generators {
   } yield NodeInfo(cost, name)
 
 
-//
-//  val GenEmptyTree: Gen[Tree] = for {
-//    nodeInfo <- GenNodeInfo
-//  } yield Tree(nodeInfo, Seq.empty)
-//
-//  val treeRecursive: Recursive[Tree] = derive.Recursive[Tree](GenEmptyTree)
+  val GenEmptyTree: Gen[Tree] = for {
+    nodeInfo <- GenNodeInfo
+  } yield Tree(nodeInfo, Seq.empty)
+
+  def GenTreeOfDept(depth: Int): Gen[Tree] = {
+    def go(limit: Int, res: Seq[Tree]): Gen[Tree] = {
+      if (limit == 0) GenEmptyTree
+      else for {
+        nodeInfo <- GenNodeInfo
+      } yield Tree(nodeInfo, Seq(randomOf(go(limit - 1, res))))
+    }
+
+    go(depth, Seq.empty)
+  }
+
+  val treeRecursive: Recursive[Tree] = derive.Recursive[Tree](GenEmptyTree)
 
   def randomOf[T](generator: Gen[T]): T = generator.pureApply(Parameters.default, Seed.random())
 }
