@@ -1,7 +1,5 @@
 package com.karlssonkristoffer
 
-import scala.annotation.tailrec
-
 case class Cost(value: Float)
 
 case class NodeName(name: String)
@@ -15,10 +13,6 @@ case class TypeB(cost: Cost, nodeName: NodeName, children: Seq[TypeB]) {
 case class Tree(nodeInfo: NodeInfo, trees: Seq[Tree])
 
 object Tree {
-  @tailrec
-  def apply(nodeInfo: NodeInfo, trees: Seq[Tree]): Tree = {
-    Tree(nodeInfo, trees)
-  }
 
   def apply(typeB: TypeB): Tree = typeB.toTree
 }

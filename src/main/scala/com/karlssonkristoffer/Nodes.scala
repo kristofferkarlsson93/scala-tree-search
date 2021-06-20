@@ -1,7 +1,8 @@
 package com.karlssonkristoffer
 
 object Nodes {
-  def hej(): Unit = {
 
+  def getCommonNodeNamesExceptBepa(firstTree: Tree, secondTree: Tree): Seq[NodeName] = {
+    Seq.empty
   }
 }
