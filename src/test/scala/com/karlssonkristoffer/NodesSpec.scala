@@ -2,7 +2,6 @@ package com.karlssonkristoffer
 
 import com.karlssonkristoffer.Generators._
 
-
 class NodesSpec extends Spec {
 
   "Nodes.getCommonNodeNamesExceptBepa" - {
@@ -43,28 +42,81 @@ class NodesSpec extends Spec {
     }
     "trees with multiple levels" - {
       "should return the matching node name when first tree and second tree both contains 'Third'" in {
-        val treeA = Tree(NodeInfo(Cost(0), NodeName("First")), Seq(
-          Tree(NodeInfo(Cost(0), NodeName("Second")), Seq(
-            Tree(NodeInfo(Cost(0), NodeName("Third")), Seq.empty)
-          ))
-        ))
-        val treeB = Tree(NodeInfo(Cost(0), NodeName("A")), Seq(
-          Tree(NodeInfo(Cost(0), NodeName("B")), Seq(
-            Tree(NodeInfo(Cost(0), NodeName("Third")), Seq.empty)
-          ))
-        ))
+        val treeA = Tree(
+          NodeInfo(Cost(0), NodeName("First")),
+          Seq(
+            Tree(
+              NodeInfo(Cost(0), NodeName("Second")),
+              Seq(
+                Tree(NodeInfo(Cost(0), NodeName("Third")), Seq.empty)
+              )
+            )
+          )
+        )
+        val treeB = Tree(
+          NodeInfo(Cost(0), NodeName("A")),
+          Seq(
+            Tree(
+              NodeInfo(Cost(0), NodeName("B")),
+              Seq(
+                Tree(NodeInfo(Cost(0), NodeName("Third")), Seq.empty)
+              )
+            )
+          )
+        )
         val result = Nodes.getCommonNodeNamesExceptBepa(treeA, treeB)
         result.length shouldBe 1
         result.head.name shouldBe "Third"
       }
+      "should return an empty list when tree A has two nodes with same name" in {
+        val treeA = Tree(
+          NodeInfo(Cost(0), NodeName("First")),
+          Seq(
+            Tree(
+              NodeInfo(Cost(0), NodeName("Second")),
+              Seq(
+                Tree(NodeInfo(Cost(0), NodeName("Second")), Seq.empty)
+              )
+            )
+          )
+        )
+        val treeB = Tree(NodeInfo(Cost(0), NodeName("A")), Seq.empty)
+        val result = Nodes.getCommonNodeNamesExceptBepa(treeA, treeB)
+        result.length shouldBe 0
+      }
       "should work with TypeB as well" in {
-        val tree = Tree(TypeB(Cost(0), NodeName("First"), Seq(
-          TypeB(Cost(0), NodeName("Second"), Seq(
-            TypeB(Cost(0), NodeName("Third"), Seq.empty)
-          )))
-        ))
-        val result = Nodes.getCommonNodeNamesExceptBepa(tree, Tree(NodeInfo(Cost(0), NodeName("Other tree")), Seq.empty))
-        result.length shouldBe 4
+        val treeA = Tree(
+          TypeB(
+            Cost(0),
+            NodeName("First"),
+            Seq(
+              TypeB(
+                Cost(0),
+                NodeName("Second"),
+                Seq(
+                  TypeB(Cost(0), NodeName("Third"), Seq.empty)
+                )
+              )
+            )
+          )
+        )
+        val treeB = Tree(
+          TypeB(
+            Cost(0),
+            NodeName("A"),
+            Seq(
+              TypeB(
+                Cost(0),
+                NodeName("B"),
+                Seq(
+                  TypeB(Cost(0), NodeName("Third"), Seq.empty)
+                )
+              )
+            )
+          )
+        )
+        val result = Nodes.getCommonNodeNamesExceptBepa(treeA, treeB)
+        result.length shouldBe 1
       }
     }
   }

@@ -7,19 +7,20 @@ object Nodes {
     def treeNodesToSeq(tree: Tree, nodeList: Seq[NodeInfo]): Seq[NodeInfo] = {
       if (tree.branches.isEmpty) nodeList :+ tree.nodeInfo
       else {
-        tree.branches.flatMap(child => treeNodesToSeq(child, nodeList :+ tree.nodeInfo))
+        tree.branches.flatMap(branch => treeNodesToSeq(branch, nodeList :+ tree.nodeInfo))
       }
     }
 
-    val firstTreesNodes = treeNodesToSeq(firstTree, Seq.empty)
-    val secondTreesNodes = treeNodesToSeq(secondTree, Seq.empty)
-    val allNodes = Seq.concat(firstTreesNodes, secondTreesNodes)
-    
-    val nodeNamesThatOccuresMoreThanOnce = allNodes.groupBy(_.nodeInfoName).collect {
-      case (nodeName, nodesWithName) if nodesWithName.length > 1 => nodeName
-    }.toSeq
+    val uniqueNodesFromFirstTree = treeNodesToSeq(firstTree, Seq.empty).distinct
+    val uniqueNodesFromSecondTree = treeNodesToSeq(secondTree, Seq.empty).distinct
 
-    nodeNamesThatOccuresMoreThanOnce
+    val duplicateNodeNames = Seq
+      .concat(uniqueNodesFromFirstTree, uniqueNodesFromSecondTree)
+      .groupBy(_.nodeInfoName)
+      .collect { case (nodeName, nodesWithName) if nodesWithName.length > 1 => nodeName }
+      .toSeq
+
+    duplicateNodeNames
       .filterNot(_.name == "Bepa")
   }
 }

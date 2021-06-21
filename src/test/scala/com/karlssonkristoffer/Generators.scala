@@ -6,6 +6,7 @@ import org.scalacheck.rng.Seed
 import org.scalacheck.derive.Recursive
 
 object Generators {
+
   val GenNodeName: Gen[NodeName] = for {
     name <- Gen.alphaStr
   } yield NodeName(name)
@@ -19,7 +20,6 @@ object Generators {
     name <- GenNodeName
   } yield NodeInfo(cost, name)
 
-
   val GenEmptyTree: Gen[Tree] = for {
     nodeInfo <- GenNodeInfo
   } yield Tree(nodeInfo, Seq.empty)
@@ -27,9 +27,10 @@ object Generators {
   def GenTreeOfDept(depth: Int): Gen[Tree] = {
     def go(limit: Int, res: Seq[Tree]): Gen[Tree] = {
       if (limit == 0) GenEmptyTree
-      else for {
-        nodeInfo <- GenNodeInfo
-      } yield Tree(nodeInfo, Seq(randomOf(go(limit - 1, res))))
+      else
+        for {
+          nodeInfo <- GenNodeInfo
+        } yield Tree(nodeInfo, Seq(randomOf(go(limit - 1, res))))
     }
 
     go(depth, Seq.empty)
