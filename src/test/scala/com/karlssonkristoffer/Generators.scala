@@ -3,7 +3,6 @@ package com.karlssonkristoffer
 import org.scalacheck._
 import Gen._
 import org.scalacheck.rng.Seed
-import org.scalacheck.ScalacheckShapeless._
 import org.scalacheck.derive.Recursive
 
 object Generators {

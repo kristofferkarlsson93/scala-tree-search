@@ -13,9 +13,13 @@ object Nodes {
 
     val firstTreesNodes = treeNodesToSeq(firstTree, Seq.empty)
     val secondTreesNodes = treeNodesToSeq(secondTree, Seq.empty)
+    val allNodes = Seq.concat(firstTreesNodes, secondTreesNodes)
+    
+    val nodeNamesThatOccuresMoreThanOnce = allNodes.groupBy(_.nodeInfoName).collect {
+      case (nodeName, nodesWithName) if nodesWithName.length > 1 => nodeName
+    }.toSeq
 
-    Seq.concat(firstTreesNodes, secondTreesNodes)
-      .map(_.nodeInfoName)
+    nodeNamesThatOccuresMoreThanOnce
       .filterNot(_.name == "Bepa")
   }
 }
