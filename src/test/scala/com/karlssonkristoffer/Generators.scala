@@ -12,7 +12,7 @@ object Generators {
   } yield NodeName(name)
 
   val GenCost: Gen[Cost] = for {
-    cost <- Gen.posNum[Float]
+    cost <- Gen.choose[Float](0, Float.MaxValue)
   } yield Cost(cost)
 
   val GenNodeInfo: Gen[NodeInfo] = for {
@@ -36,7 +36,7 @@ object Generators {
     go(depth, Seq.empty)
   }
 
-  val treeRecursive: Recursive[Tree] = derive.Recursive[Tree](GenEmptyTree)
+  val intBetween1And100: Gen[Int] = Gen.choose[Int](0, 100)
 
   def randomOf[T](generator: Gen[T]): T = generator.pureApply(Parameters.default, Seed.random())
 }
