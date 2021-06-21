@@ -117,6 +117,7 @@ class NodesSpec extends Spec {
         )
         val result = Nodes.getCommonNodeNamesExceptBepa(treeA, treeB)
         result.length shouldBe 1
+        result.head.name shouldBe "Third"
       }
     }
   }
